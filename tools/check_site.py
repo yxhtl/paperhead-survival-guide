@@ -50,7 +50,10 @@ for filename, (language, canonical) in PAGES.items():
     assert all("noindex" not in rule and "nofollow" not in rule for rule in page.robots), f"{filename}: indexing blocked"
     assert "Local MVP" not in text and "本地首版" not in text, f"{filename}: local-only label remains"
     assert page.focuses == {"health", "movement", "clips"}, f"{filename}: missing focus choice"
-    assert '<script src="analytics.js" defer></script>' in text, f"{filename}: missing analytics loader"
+    analytics_tag = '<script src="analytics.js?v=20261014" defer></script>'
+    app_tag = '<script src="app.js?v=20261014" defer></script>'
+    assert analytics_tag in text and app_tag in text, f"{filename}: missing versioned scripts"
+    assert text.index(analytics_tag) < text.index(app_tag), f"{filename}: initialize analytics before recording interactions"
     assert 'name="google-site-verification"' in text, f"{filename}: missing Search Console verification"
     language_links = [a for a in page.links if a.get("class") == "language-link"]
     expected = "zh.html" if language == "en" else "./"
