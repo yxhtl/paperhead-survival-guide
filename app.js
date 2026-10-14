@@ -32,6 +32,7 @@ const suggestions = isChinese ? {
 const focusButtons = [...document.querySelectorAll('[data-focus]')];
 const answerTitle = document.getElementById('answer-title');
 const answerText = document.getElementById('answer-text');
+let interactionRecorded = false;
 
 for (const button of focusButtons) {
   button.addEventListener('click', () => {
@@ -41,6 +42,11 @@ for (const button of focusButtons) {
     }
     answerTitle.textContent = suggestion.title;
     answerText.textContent = suggestion.text;
+    if (!interactionRecorded && typeof window.gtag === 'function') {
+      interactionRecorded = true;
+      window.gtag('event', 'check_start', { send_to: 'G-9JJPLVM56V' });
+      window.gtag('event', 'recommendation_view', { send_to: 'G-9JJPLVM56V' });
+    }
   });
 }
 

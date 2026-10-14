@@ -36,6 +36,8 @@ esac
 
 python tools/check_site.py
 node --check app.js
+node --check analytics.js
+node tools/check_analytics.cjs
 echo "分支：$branch"
 echo "目标：$remote"
 git status --short
